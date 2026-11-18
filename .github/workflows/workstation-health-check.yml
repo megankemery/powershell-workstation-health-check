@@ -1,0 +1,22 @@
+name: PowerShell Workstation Health Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "Get-WorkstationHealth.ps1"
+      - ".github/workflows/workstation-health-check.yml"
+
+jobs:
+  workstation-health-check:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run PowerShell health check
+        shell: pwsh
+        run: ./Get-WorkstationHealth.ps1
