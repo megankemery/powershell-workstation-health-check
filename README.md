@@ -160,6 +160,71 @@ PowerShell workflow completed successfully.
 Future improvements may include separate DNS
 resolution and HTTPS connectivity checks.
 
+## Enhanced Network Connectivity Testing
+
+The workstation health check uses two separate
+network diagnostics to provide more meaningful
+troubleshooting information.
+
+### ICMP Connectivity Test
+
+The script uses `Test-Connection` to check whether
+1.1.1.1 responds to ICMP echo requests.
+
+A failed ICMP test does not necessarily indicate
+an internet outage because ICMP traffic may be
+blocked or filtered by network security policies.
+
+### HTTPS Connectivity Test
+
+The script uses `Invoke-WebRequest` to test
+HTTPS connectivity to https://www.microsoft.com.
+
+This provides an additional indication of whether
+the workstation can reach a public website.
+
+### Verified Test Results
+
+During GitHub Actions testing, the Windows runner
+produced the following results:
+
+| Diagnostic | Result |
+|---|---|
+| ICMP connectivity | Failed |
+| HTTPS connectivity | Successful |
+| GitHub Actions workflow | Successful |
+| CSV report generation | Successful |
+
+These results demonstrate that HTTPS connectivity
+can succeed even when an ICMP test fails.
+
+The reason for the failed ICMP test was not
+determined, so it should not be attributed to
+a specific firewall or network policy.
+
+### CSV Report Enhancement
+
+The generated workstation health report now
+contains 15 columns, including:
+
+- `NetworkStatus` - ICMP connectivity result
+- `HTTPSStatus` - HTTPS connectivity result
+
+Both results are included in the downloadable
+GitHub Actions report artifact.
+
+A fictional example of the updated report is
+available in `sample-health-report.csv`.
+
+### Troubleshooting Skills Demonstrated
+
+- Comparing multiple network diagnostic methods
+- Understanding ICMP versus HTTPS connectivity
+- Interpreting network test limitations
+- Updating PowerShell reporting functionality
+- Verifying CSV output
+- Testing changes through GitHub Actions
+
 ## Skills Demonstrated
 
 ### Windows Administration
