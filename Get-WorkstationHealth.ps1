@@ -148,6 +148,34 @@ else {
 
 Write-Host "System information collected successfully."
 
+# HTTPS connectivity health check
+Write-Host ""
+Write-Host "HTTPS CONNECTIVITY CHECK"
+Write-Host "------------------------"
+
+$httpsStatus = "Failed"
+
+try {
+    $response = Invoke-WebRequest `
+        -Uri "https://www.microsoft.com" `
+        -Method Head `
+        -TimeoutSec 10 `
+        -ErrorAction Stop
+
+    if ($response.StatusCode -ge 200 -and
+        $response.StatusCode -lt 400) {
+
+        $httpsStatus = "Successful"
+
+        Write-Host "HTTPS Connectivity: Successful" `
+            -ForegroundColor Green
+    }
+}
+catch {
+    Write-Host "WARNING: HTTPS connectivity test failed!" `
+        -ForegroundColor Yellow
+}
+
 # Generate workstation health report
 Write-Host ""
 Write-Host "GENERATING HEALTH REPORT"
