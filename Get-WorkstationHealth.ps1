@@ -64,4 +64,37 @@ else {
     Write-Host "WARNING: C: drive information unavailable." -ForegroundColor Yellow
 }
 
+# Memory utilization health check
+Write-Host ""
+Write-Host "MEMORY HEALTH CHECK"
+Write-Host "-------------------"
+
+$totalMemoryKB = $os.TotalVisibleMemorySize
+$freeMemoryKB = $os.FreePhysicalMemory
+
+if ($totalMemoryKB -gt 0) {
+    $usedMemoryKB = $totalMemoryKB - $freeMemoryKB
+
+    $usedMemoryPercent = [math]::Round(
+        ($usedMemoryKB / $totalMemoryKB) * 100, 2
+    )
+
+    $availableMemoryGB = [math]::Round(
+        $freeMemoryKB / 1MB, 2
+    )
+
+    Write-Host "Available RAM: $availableMemoryGB GB"
+    Write-Host "Memory Usage: $usedMemoryPercent%"
+
+    if ($usedMemoryPercent -ge 85) {
+        Write-Host "WARNING: High memory usage!" -ForegroundColor Yellow
+    }
+    else {
+        Write-Host "Memory Status: Healthy" -ForegroundColor Green
+    }
+}
+else {
+    Write-Host "WARNING: Memory information unavailable." -ForegroundColor Yellow
+}
+
 Write-Host "System information collected successfully."
