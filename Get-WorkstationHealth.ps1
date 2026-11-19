@@ -97,4 +97,53 @@ else {
     Write-Host "WARNING: Memory information unavailable." -ForegroundColor Yellow
 }
 
+# Network connectivity health check
+Write-Host ""
+Write-Host "NETWORK HEALTH CHECK"
+Write-Host "--------------------"
+
+# Find active network adapters
+$adapters = Get-NetAdapter |
+    Where-Object { $_.Status -eq "Up" }
+
+if ($adapters) {
+    foreach ($adapter in $adapters) {
+        Write-Host "Adapter: $($adapter.Name)"
+        Write-Host "Status: $($adapter.Status)"
+
+        # Retrieve IPv4 configuration
+        $ipAddresses = Get-NetIPAddress `
+            -InterfaceIndex $adapter.ifIndex `
+            -AddressFamily IPv4 `
+            -ErrorAction SilentlyContinue
+
+        foreach ($ip in $ipAddresses) {
+            Write-Host "IPv4 Address: $($ip.IPAddress)"
+        }
+    }
+}
+else {
+    Write-Host "WARNING: No active network adapters found!" `
+        -ForegroundColor Yellow
+}
+
+# Test outbound network connectivity
+Write-Host ""
+Write-Host "Testing connectivity to 1.1.1.1..."
+
+$connection = Test-Connection `
+    -ComputerName "1.1.1.1" `
+    -Count 2 `
+    -Quiet `
+    -ErrorAction SilentlyContinue
+
+if ($connection) {
+    Write-Host "Network Connectivity: Successful" `
+        -ForegroundColor Green
+}
+else {
+    Write-Host "WARNING: Connectivity test failed!" `
+        -ForegroundColor Yellow
+}
+
 Write-Host "System information collected successfully."
