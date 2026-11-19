@@ -1,2 +1,3 @@
-ReportDate,ComputerName,OperatingSystem,WindowsBuild,Processor,InstalledRAM_GB,SystemUptime_Days,DiskTotal_GB,DiskFree_GB,DiskFree_Percent,DiskStatus,MemoryUsed_Percent,MemoryStatus,NetworkStatus
-2026-11-19 13:03:29,DEMO-WORKSTATION,Microsoft Windows 11 Pro,26100,Example Processor,16,0,150,30,20,Healthy,15.88,Healthy,Connectivity Test Failed
+ReportDate,ComputerName,OperatingSystem,WindowsBuild,Processor,InstalledRAM_GB,SystemUptime_Days,DiskTotal_GB,DiskFree_GB,DiskFree_Percent,DiskStatus,MemoryUsed_Percent,MemoryStatus,NetworkStatus,HTTPSStatus
+2026-11-19 13:15:24,DEMO-WORKSTATION,Microsoft Windows 11 Pro,26100,Example Processor,16,0,150,31,20.67,Healthy,15.45,Healthy,Connectivity Test Failed,Successful
+
