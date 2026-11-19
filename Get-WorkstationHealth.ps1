@@ -147,3 +147,69 @@ else {
 }
 
 Write-Host "System information collected successfully."
+
+# Generate workstation health report
+Write-Host ""
+Write-Host "GENERATING HEALTH REPORT"
+Write-Host "------------------------"
+
+# Set report location
+$reportPath = Join-Path $PSScriptRoot "workstation-health-report.csv"
+
+# Determine disk status
+$diskStatus = "Unknown"
+
+if ($null -ne $disk -and $disk.Size -gt 0) {
+    if ($freePercent -lt 15) {
+        $diskStatus = "Low Disk Space"
+    }
+    else {
+        $diskStatus = "Healthy"
+    }
+}
+
+# Determine memory status
+$memoryStatus = "Unknown"
+
+if ($totalMemoryKB -gt 0) {
+    if ($usedMemoryPercent -ge 85) {
+        $memoryStatus = "High Memory Usage"
+    }
+    else {
+        $memoryStatus = "Healthy"
+    }
+}
+
+# Determine network status
+$networkStatus = "Connectivity Test Failed"
+
+if ($connection) {
+    $networkStatus = "Successful"
+}
+
+# Build the report
+$report = [PSCustomObject]@{
+    ReportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    ComputerName = $env:COMPUTERNAME
+    OperatingSystem = $os.Caption
+    WindowsBuild = $os.BuildNumber
+    Processor = $processor.Name
+    InstalledRAM_GB = $ramGB
+    SystemUptime_Days = $uptime.Days
+    DiskTotal_GB = $totalGB
+    DiskFree_GB = $freeGB
+    DiskFree_Percent = $freePercent
+    DiskStatus = $diskStatus
+    MemoryUsed_Percent = $usedMemoryPercent
+    MemoryStatus = $memoryStatus
+    NetworkStatus = $networkStatus
+}
+
+# Export results to CSV
+$report | Export-Csv `
+    -Path $reportPath `
+    -NoTypeInformation `
+    -Encoding UTF8
+
+Write-Host "Health report generated successfully!"
+Write-Host "Report saved to: $reportPath"
