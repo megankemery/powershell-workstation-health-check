@@ -1,3 +1,4 @@
+
 name: PowerShell Workstation Health Check
 
 on:
@@ -20,3 +21,11 @@ jobs:
       - name: Run PowerShell health check
         shell: pwsh
         run: ./Get-WorkstationHealth.ps1
+
+      - name: Upload workstation health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: workstation-health-report
+          path: workstation-health-report.csv
+          if-no-files-found: error
+          retention-days: 7
