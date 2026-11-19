@@ -231,6 +231,8 @@ $report = [PSCustomObject]@{
     MemoryUsed_Percent = $usedMemoryPercent
     MemoryStatus = $memoryStatus
     NetworkStatus = $networkStatus
+    HTTPSStatus = $httpsStatus
+
 }
 
 # Export results to CSV
